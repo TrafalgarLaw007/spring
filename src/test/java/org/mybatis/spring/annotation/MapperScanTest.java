@@ -36,6 +36,7 @@ import org.mybatis.spring.annotation.mapper.ds1.AppConfigWithDefaultMapperScanAn
 import org.mybatis.spring.annotation.mapper.ds1.AppConfigWithDefaultMapperScans;
 import org.mybatis.spring.annotation.mapper.ds1.Ds1Mapper;
 import org.mybatis.spring.annotation.mapper.ds2.Ds2Mapper;
+import org.mybatis.spring.annotation.mapper.ds3.Ds3Mapper;
 import org.mybatis.spring.mapper.AnnotatedMapper;
 import org.mybatis.spring.mapper.AppConfigWithDefaultPackageScan;
 import org.mybatis.spring.mapper.MapperInterface;
@@ -125,6 +126,17 @@ class MapperScanTest {
     applicationContext.getBean("mapperSubinterface");
     applicationContext.getBean("mapperChildInterface");
     applicationContext.getBean("annotatedMapper");
+  }
+
+  @Test
+  void testMyInterfaceScan() {
+    applicationContext.register(MyAppConfigWithPackageScan.class);
+
+    startContext();
+
+    // all interfaces with methods should be loaded
+    Ds3Mapper ds3Mapper = (Ds3Mapper) applicationContext.getBean("ds3Mapper");
+    ds3Mapper.test();
   }
 
   @Test
@@ -388,6 +400,11 @@ class MapperScanTest {
   @Configuration
   @MapperScan("org.mybatis.spring.mapper")
   public static class AppConfigWithPackageScan {
+  }
+
+  @Configuration
+  @MapperScan(basePackages = "org.mybatis.spring.annotation.mapper.ds3")
+  public static class MyAppConfigWithPackageScan {
   }
 
   @Configuration

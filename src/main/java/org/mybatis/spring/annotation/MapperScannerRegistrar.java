@@ -68,6 +68,8 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
    */
   @Override
   public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+    System.out.println("---MapperScannerRegistrar---");
+    // 解析@MapperScan注解
     AnnotationAttributes mapperScanAttrs = AnnotationAttributes
         .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScan.class.getName()));
     if (mapperScanAttrs != null) {
@@ -76,6 +78,10 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
     }
   }
 
+  /**
+   * 向Spring容器内注册MapperScannerConfigurer类，该类实现了BeanDefinitionRegistryPostProcessor、ApplicationContextAware等接口，
+   * 同时再创建BeanDefinition时，会解析@MapperScan配置的内容作为属性添加到BeanDefinition内。
+   */
   void registerBeanDefinitions(AnnotationMetadata annoMeta, AnnotationAttributes annoAttrs,
       BeanDefinitionRegistry registry, String beanName) {
 

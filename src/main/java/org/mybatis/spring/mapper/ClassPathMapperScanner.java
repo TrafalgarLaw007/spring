@@ -40,6 +40,7 @@ import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.util.StringUtils;
 
 /**
+ * ClassPathBeanDefinitionScanner（类路径BeanDefinition扫描器），通过basePackage、annotationClass
  * A {@link ClassPathBeanDefinitionScanner} that registers Mappers by {@code basePackage}, {@code annotationClass}, or
  * {@code markerInterface}. If an {@code annotationClass} and/or {@code markerInterface} is specified, only the
  * specified types will be searched (searching for all interfaces will be disabled).
@@ -196,11 +197,14 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   }
 
   /**
+   * 调用父类扫描方法，该方法会扫描并注册所有候选者为BeanDefinitionHolder。
+   * 然后对已注册的对象通过后置处理器的处理将其设置为MapperFactoryBeans。
    * Calls the parent search that will search and register all the candidates. Then the registered objects are post
    * processed to set them as MapperFactoryBeans
    */
   @Override
   public Set<BeanDefinitionHolder> doScan(String... basePackages) {
+    System.out.println("---ClassPathMapperScanner doScan---");
     Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
 
     if (beanDefinitions.isEmpty()) {
