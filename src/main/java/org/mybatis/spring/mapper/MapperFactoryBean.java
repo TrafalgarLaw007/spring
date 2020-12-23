@@ -92,6 +92,7 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
    */
   @Override
   public T getObject() throws Exception {
+    System.out.println("---MapperFactoryBean " + this.mapperInterface.getName() + " ---");
     return getSqlSession().getMapper(this.mapperInterface);
   }
 

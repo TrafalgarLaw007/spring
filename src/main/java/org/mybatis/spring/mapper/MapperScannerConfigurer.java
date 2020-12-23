@@ -42,6 +42,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
 /**
+ *
  * BeanDefinitionRegistryPostProcessor that searches recursively starting from a base package for interfaces and
  * registers them as {@code MapperFactoryBean}. Note that only interfaces with at least one method will be registered;
  * concrete classes will be ignored.
@@ -350,10 +351,11 @@ public class MapperScannerConfigurer
    */
   @Override
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
+    System.out.println("---MapperScannerConfigurer---");
     if (this.processPropertyPlaceHolders) {
       processPropertyPlaceHolders();
     }
-
+    // 自定义类路径Mapper扫描器
     ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
     scanner.setAddToConfig(this.addToConfig);
     scanner.setAnnotationClass(this.annotationClass);

@@ -40,6 +40,7 @@ import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.util.StringUtils;
 
 /**
+ * ClassPathBeanDefinitionScanner(类路径扫描器)
  * A {@link ClassPathBeanDefinitionScanner} that registers Mappers by {@code basePackage}, {@code annotationClass}, or
  * {@code markerInterface}. If an {@code annotationClass} and/or {@code markerInterface} is specified, only the
  * specified types will be searched (searching for all interfaces will be disabled).
@@ -196,11 +197,15 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   }
 
   /**
+   * 调用父类扫描方法，该方法会扫描并注册所有候选者为BeanDefinitionHolder。
+   * 然后对已注册的对象通过后置处理器的处理将其设置为MapperFactoryBeans。
    * Calls the parent search that will search and register all the candidates. Then the registered objects are post
    * processed to set them as MapperFactoryBeans
    */
   @Override
   public Set<BeanDefinitionHolder> doScan(String... basePackages) {
+    System.out.println("---ClassPathMapperScanner doScan---");
+    // 调用父类扫描方法(ClassPathBeanDefinitionScanner)，扫描出对应的类
     Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
 
     if (beanDefinitions.isEmpty()) {
@@ -232,6 +237,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
       // the mapper interface is the original class of the bean
       // but, the actual class of the bean is MapperFactoryBean
+      // Mapper接口是Bean的原始类，但是Bean的实际类是MapperFactoryBean，在获取Bean的时候实际是调用MapperFactoryBean的getObject()方法。
       definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59
       definition.setBeanClass(this.mapperFactoryBeanClass);
 
